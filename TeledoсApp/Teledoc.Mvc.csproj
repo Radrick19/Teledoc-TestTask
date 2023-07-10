@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Teledok.Application\Teledoc.Application.csproj" />
-    <ProjectReference Include="..\Teledok.Domain\Teledoc.Domain.csproj" />
+    <ProjectReference Include="..\Teledoс.Application\Teledoc.Application.csproj" />
+    <ProjectReference Include="..\Teledoс.Domain\Teledoc.Domain.csproj" />
   </ItemGroup>
 
 </Project>
