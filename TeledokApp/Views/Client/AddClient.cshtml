@@ -1,0 +1,27 @@
+﻿@using TeledokApp.ViewModels;
+@model AddClientViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+<form asp-controller="client" asp-action="addclient"> 
+    <div class="input-block">
+        <input required asp-for="Inn" placeholder="ИНН" />
+        <span asp-validation-for="Inn"></span>
+    </div>
+    <div class="input-block">
+        <input required asp-for="Name" placeholder="Название" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="input-block">
+        <select asp-for="ClientType">
+            <option value="IndividualPerson">ИП</option>
+            <option value="LegalEntity">Юридическое лицо</option>
+        </select>
+    </div>
+    <div class="input-block">
+        <input required asp-for="IncorporatorInn" placeholder="ИНН Учредителя" />
+        <span asp-validation-for="IncorporatorInn"></span>
+    </div>
+    <input type="submit"/>
+</form>

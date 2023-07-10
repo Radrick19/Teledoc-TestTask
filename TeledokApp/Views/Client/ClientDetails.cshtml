@@ -1,0 +1,36 @@
+﻿@using Teledok.Domain.Infrastructure.Enums;
+@using Teledok.Domain.Models.Base;
+@model Client
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+<div class="client-details">
+    <h4>ИНН:@Model.Inn</h4>
+    <h5>Название: @Model.Name</h5>
+    @if (Model.ClientType == ClientType.IndividualPerson)
+    {
+        <h5>ИП</h5>
+        var incorporator = Model.GetIncorporators().First();
+        <h3>Учредитель: ИНН:@incorporator.Inn ФИО: @incorporator.FullName</h3>
+    }
+    else
+    {
+        <h5>Юридическое лицо</h5>
+        var incorporators = Model.GetIncorporators();
+        <h3>Учредители:</h3>
+        @foreach(var incorporator in incorporators)
+        {
+            <h3>ИНН:@incorporator.Inn ФИО:@incorporator.FullName</h3>
+        }
+        <div class="add-new-incorporator">
+            <form asp-controller="client" asp-action="addincorporator">
+                <input name="clientInn" value="@Model.Inn" type="hidden" />
+                <input required name="incorporatorInn" type="search" placeholder="ИНН"/>
+                <input type="submit" value="Добавить"/>
+            </form>
+        </div>
+    }
+    <h5>Дата создания: @Model.CreateDate</h5>
+    <h5>Дата последнего обновления @Model.UpdateDate</h5>
+</div>

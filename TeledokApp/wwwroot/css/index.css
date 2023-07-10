@@ -1,0 +1,43 @@
+﻿main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.client-type{
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.client-type a{
+    margin-right: 30px;
+    cursor: pointer;
+    color: black;
+    padding: 5px;
+}
+
+.add a {
+    font-size: 25px;
+    text-decoration: none;
+    font-weight: 200;
+    color: black;
+}
+
+.add a:hover {
+    color: dimgray;
+}
+
+td{
+    padding: 20px;
+    box-sizing: content-box;
+}
+
+table{
+    margin-top: 20px;
+}
+
+table tr{
+    outline: 2px solid black;
+}

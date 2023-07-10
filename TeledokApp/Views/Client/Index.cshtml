@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+<div class="client-type">
+    <a class="client-type-link" onclick="OpenIndividualPersonsTable(this)">Индивидуальные предприниматели</a>
+    <a class="client-type-link" onclick="OpenLegalEntitiesTable(this)">Юридические лица</a>
+    <div class="add">
+        <a asp-controller="client" asp-action="addclient">Добавить</a>
+    </div>
+</div>
+<table class="content-table">
+</table>
+
+<script type="text/javascript" src="/js/client.js" charset="utf-8"></script>

@@ -1,0 +1,25 @@
+﻿@using TeledokApp.ViewModels;
+@model ClientTableViewModel
+
+<table>
+    <tr>
+        <th>ИНН</th>
+        <th>Название</th>
+        <th>Дата создания</th>
+        <th>Дата изменения</th>
+    </tr>
+    @if (Model.Clients != null)
+    {
+        @foreach (var client in Model.Clients)
+        {
+            <tr>
+                <td>@client.Inn</td>
+                <td>@client.Name</td>
+                <td>@client.CreateDate</td>
+                <td>@client.UpdateDate</td>
+                <td><a asp-controller="client" asp-action="clientdetails" asp-route-clientId="@client.Id" \
+                        asp-route-clientType="@client.ClientType">Подробнее</a></td>
+            </tr>
+        }
+    }
+</table>

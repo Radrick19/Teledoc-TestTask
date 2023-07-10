@@ -1,0 +1,16 @@
+﻿header .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.manage-entity a{
+    margin-right: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+}
+
+.manage-entity a:hover {
+    color: dimgray;
+}

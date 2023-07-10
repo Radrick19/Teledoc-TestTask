@@ -1,0 +1,27 @@
+﻿@using TeledokApp.ViewModels;
+@model IncorporatorTableViewModel
+
+<table>
+    <thead>
+        <tr>
+            <th>ИНН</th>
+            <th>ФИО</th>
+            <th>Дата создания</th>
+            <th>Дата изменения</th>
+        </tr>
+    </thead>
+    <tbody>
+            @if (Model.Incorporators != null)
+            {
+                @foreach (var client in Model.Incorporators)
+                {
+                <tr>
+                    <td>@client.Inn</td>
+                    <td>@client.FullName</td>
+                    <td>@client.CreateDate</td>
+                    <td>@client.UpdateDate</td>
+                </tr>
+                }
+            }
+    </tbody>
+</table>

@@ -1,0 +1,7 @@
+﻿input, select{
+    min-width: 300px;
+    min-height: 30px;
+    font-size: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+}

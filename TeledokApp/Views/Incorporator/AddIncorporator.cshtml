@@ -1,0 +1,17 @@
+﻿@using TeledokApp.ViewModels;
+@model AddIncorporatorViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+<form asp-controller="incorporator" asp-action="addincorporator">
+    <div class="input-block">
+        <input required asp-for="Inn" placeholder="ИНН" />
+        <span asp-validation-for="Inn"></span>
+    </div>
+    <div class="input-block">
+        <input required asp-for="FullName" placeholder="ФИО" />
+        <span asp-validation-for="FullName"></span>
+    </div>
+    <input type="submit" />
+</form>
