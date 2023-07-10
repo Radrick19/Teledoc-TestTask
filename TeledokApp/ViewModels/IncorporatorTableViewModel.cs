@@ -1,6 +1,6 @@
-﻿using Teledok.Domain.Models;
+﻿using Teledoc.Domain.Models;
 
-namespace TeledokApp.ViewModels
+namespace TeledocApp.ViewModels
 {
     public class IncorporatorTableViewModel
     {

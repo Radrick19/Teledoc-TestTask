@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Teledok.Domain;
-using Teledok.Domain.Infrastructure;
-using Teledok.Domain.Interfaces;
-using Teledok.Domain.Models;
-using Teledok.Domain.Models.Clients;
-using Teledok.Domain.Repositories;
+using Teledoc.Domain;
+using Teledoc.Domain.Infrastructure;
+using Teledoc.Domain.Interfaces;
+using Teledoc.Domain.Models;
+using Teledoc.Domain.Models.Clients;
+using Teledoc.Domain.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

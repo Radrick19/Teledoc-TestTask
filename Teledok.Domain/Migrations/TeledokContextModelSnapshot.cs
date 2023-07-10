@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Teledok.Domain;
+using Teledoc.Domain;
 
 #nullable disable
 
-namespace Teledok.Domain.Migrations
+namespace Teledoc.Domain.Migrations
 {
     [DbContext(typeof(TeledokContext))]
     partial class TeledokContextModelSnapshot : ModelSnapshot

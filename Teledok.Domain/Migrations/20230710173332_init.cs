@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Teledok.Domain.Migrations
+namespace Teledoc.Domain.Migrations
 {
     public partial class init : Migration
     {

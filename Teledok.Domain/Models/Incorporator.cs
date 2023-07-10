@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teledok.Domain.Infrastructure.Enums;
-using Teledok.Domain.Models.Base;
-using Teledok.Domain.Models.Clients;
+using Teledoc.Domain.Infrastructure.Enums;
+using Teledoc.Domain.Models.Base;
+using Teledoc.Domain.Models.Clients;
 
-namespace Teledok.Domain.Models
+namespace Teledoc.Domain.Models
 {
     /// <summary>
     /// Учредитель

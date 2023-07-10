@@ -1,7 +1,7 @@
-﻿using Teledok.Domain.Infrastructure.Enums;
-using Teledok.Domain.Interfaces;
+﻿using Teledoc.Domain.Infrastructure.Enums;
+using Teledoc.Domain.Interfaces;
 
-namespace Teledok.Domain.Models.Base
+namespace Teledoc.Domain.Models.Base
 {
     public abstract class Client : Entity, IHasIncorporators
     {

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Teledok.Domain.Models;
-using Teledok.Domain.Models.Clients;
+using Teledoc.Domain.Models;
+using Teledoc.Domain.Models.Clients;
 
-namespace Teledok.Domain.Infrastructure.Factories
+namespace Teledoc.Domain.Infrastructure.Factories
 {
     public class IndividualPersonFactory
     {

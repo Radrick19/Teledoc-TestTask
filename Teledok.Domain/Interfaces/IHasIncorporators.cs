@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teledok.Domain.Models;
+using Teledoc.Domain.Models;
 
-namespace Teledok.Domain.Interfaces
+namespace Teledoc.Domain.Interfaces
 {
     public interface IHasIncorporators
     {

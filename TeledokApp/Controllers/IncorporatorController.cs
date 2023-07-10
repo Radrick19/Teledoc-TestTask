@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Teledok.Domain.Interfaces;
-using Teledok.Domain.Models;
-using TeledokApp.ViewModels;
+using Teledoc.Domain.Interfaces;
+using Teledoc.Domain.Models;
+using TeledocApp.ViewModels;
 
-namespace TeledokApp.Controllers
+namespace TeledocApp.Controllers
 {
     public class IncorporatorController : Controller
     {

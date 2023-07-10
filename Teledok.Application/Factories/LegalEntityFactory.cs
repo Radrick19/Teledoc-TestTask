@@ -1,8 +1,8 @@
 ﻿using System.Text.RegularExpressions;
-using Teledok.Domain.Models.Base;
-using Teledok.Domain.Models.Clients;
+using Teledoc.Domain.Models.Base;
+using Teledoc.Domain.Models.Clients;
 
-namespace Teledok.Domain.Infrastructure.Factories
+namespace Teledoc.Domain.Infrastructure.Factories
 {
     public class LegalEntityFactory
     {

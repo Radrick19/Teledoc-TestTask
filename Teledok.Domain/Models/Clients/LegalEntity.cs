@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teledok.Domain.Infrastructure.Enums;
-using Teledok.Domain.Models.Base;
+using Teledoc.Domain.Infrastructure.Enums;
+using Teledoc.Domain.Models.Base;
 
-namespace Teledok.Domain.Models.Clients
+namespace Teledoc.Domain.Models.Clients
 {
     /// <summary>
     /// Юридическое лицо

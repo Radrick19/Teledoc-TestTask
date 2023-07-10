@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TeledokApp.ViewModels
+namespace TeledocApp.ViewModels
 {
     public class AddIncorporatorViewModel
     {

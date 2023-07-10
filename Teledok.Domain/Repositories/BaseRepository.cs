@@ -5,10 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Teledok.Domain.Interfaces;
-using Teledok.Domain.Models.Base;
+using Teledoc.Domain.Interfaces;
+using Teledoc.Domain.Models.Base;
 
-namespace Teledok.Domain.Repositories
+namespace Teledoc.Domain.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : Entity
     {

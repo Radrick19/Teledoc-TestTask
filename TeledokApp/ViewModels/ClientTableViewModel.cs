@@ -1,6 +1,6 @@
-﻿using Teledok.Domain.Models.Base;
+﻿using Teledoc.Domain.Models.Base;
 
-namespace TeledokApp.ViewModels
+namespace TeledocApp.ViewModels
 {
     public class ClientTableViewModel
     {

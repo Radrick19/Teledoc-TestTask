@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teledok.Domain.Interfaces;
-using Teledok.Domain.Models.Clients;
+using Teledoc.Domain.Interfaces;
+using Teledoc.Domain.Models.Clients;
 
-namespace Teledok.Domain.Repositories
+namespace Teledoc.Domain.Repositories
 {
     public class LegalEntityRepository : BaseRepository<LegalEntity>
     {

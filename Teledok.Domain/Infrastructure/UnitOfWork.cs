@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teledok.Domain.Interfaces;
+using Teledoc.Domain.Interfaces;
 
-namespace Teledok.Domain.Infrastructure
+namespace Teledoc.Domain.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {

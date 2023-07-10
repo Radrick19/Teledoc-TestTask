@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Teledok.Domain.Interfaces
+namespace Teledoc.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

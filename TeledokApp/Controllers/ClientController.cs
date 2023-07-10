@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Teledok.Domain.Infrastructure.Enums;
-using Teledok.Domain.Infrastructure.Factories;
-using Teledok.Domain.Interfaces;
-using Teledok.Domain.Models;
-using Teledok.Domain.Models.Base;
-using Teledok.Domain.Models.Clients;
-using TeledokApp.ViewModels;
+using Teledoc.Domain.Infrastructure.Enums;
+using Teledoc.Domain.Infrastructure.Factories;
+using Teledoc.Domain.Interfaces;
+using Teledoc.Domain.Models;
+using Teledoc.Domain.Models.Base;
+using Teledoc.Domain.Models.Clients;
+using TeledocApp.ViewModels;
 
-namespace TeledokApp.Controllers
+namespace TeledocApp.Controllers
 {
     public class ClientController : Controller
     {
