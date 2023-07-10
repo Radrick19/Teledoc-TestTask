@@ -1,6 +1,9 @@
 ﻿@using TeledokApp.ViewModels;
 @model IncorporatorTableViewModel
 
+
+@if (Model.Incorporators != null && Model.Incorporators.Count() > 0)
+{
 <table>
     <thead>
         <tr>
@@ -11,17 +14,15 @@
         </tr>
     </thead>
     <tbody>
-            @if (Model.Incorporators != null)
-            {
-                @foreach (var client in Model.Incorporators)
-                {
-                <tr>
-                    <td>@client.Inn</td>
-                    <td>@client.FullName</td>
-                    <td>@client.CreateDate</td>
-                    <td>@client.UpdateDate</td>
-                </tr>
-                }
-            }
+        @foreach (var client in Model.Incorporators)
+        {
+        <tr>
+            <td>@client.Inn</td>
+            <td>@client.FullName</td>
+            <td>@client.CreateDate</td>
+            <td>@client.UpdateDate</td>
+        </tr>
+        }
     </tbody>
 </table>
+}
