@@ -1,6 +1,8 @@
 ﻿@using TeledocApp.ViewModels;
 @model ClientTableViewModel
 
+@if (Model.Clients != null && Model.Clients.Count() > 0)
+{
 <table>
     <tr>
         <th>ИНН</th>
@@ -8,8 +10,6 @@
         <th>Дата создания</th>
         <th>Дата изменения</th>
     </tr>
-    @if (Model.Clients != null)
-    {
         @foreach (var client in Model.Clients)
         {
             <tr>
@@ -21,5 +21,5 @@
                         asp-route-clientType="@client.ClientType">Подробнее</a></td>
             </tr>
         }
-    }
 </table>
+}
