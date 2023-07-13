@@ -1,27 +1,29 @@
 using Microsoft.EntityFrameworkCore;
+using Teledoc.Application.Interfaces;
+using Teledoc.Application.Services;
+using Teledoc.Database;
+using Teledoc.Database.Repositories;
 using Teledoc.Domain;
-using Teledoc.Domain.Infrastructure;
 using Teledoc.Domain.Interfaces;
 using Teledoc.Domain.Models;
-using Teledoc.Domain.Models.Clients;
-using Teledoc.Domain.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<TeledokContext>(
+builder.Services.AddScoped<TeledocContext, TeledocContext>();
+
+builder.Services.AddDbContext<TeledocContext>(
         option => option.UseSqlServer(builder.Configuration.GetConnectionString("Default")
     ));
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IRepository<ClientFounder>, BaseRepository<ClientFounder>>();
+builder.Services.AddTransient<IRepository<Founder>, FounderRepository>();
+builder.Services.AddTransient<IRepository<Client>, ClientRepository>();
 
-builder.Services.AddTransient(typeof(IRepository<>), typeof(BaseRepository<>));
-
-builder.Services.AddTransient<IRepository<Incorporator>, IncorporatorRepository>();
-builder.Services.AddTransient<IRepository<IndividualPerson>, IndividualPersonRepository>();
-builder.Services.AddTransient<IRepository<LegalEntity>, LegalEntityRepository>();
+builder.Services.AddTransient<IClientService, ClientService>();
+builder.Services.AddTransient<IFounderService, FounderService>();   
 
 var app = builder.Build();
 

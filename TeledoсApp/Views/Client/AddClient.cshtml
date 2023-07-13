@@ -1,5 +1,5 @@
 ﻿@using TeledocApp.ViewModels;
-@model AddClientViewModel
+@model AddClientForm
 @{
     ViewData["Title"] = "Home Page";
     Layout = "_Layout";
@@ -20,8 +20,8 @@
         </select>
     </div>
     <div class="input-block">
-        <input required asp-for="IncorporatorInn" placeholder="ИНН Учредителя" />
-        <span asp-validation-for="IncorporatorInn"></span>
+        <input required asp-for="FounderInn" placeholder="ИНН Учредителя" />
+        <span asp-validation-for="FounderInn"></span>
     </div>
     <input type="submit"/>
 </form>

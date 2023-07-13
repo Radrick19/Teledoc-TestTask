@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teledoc.Domain", "Teledoс.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teledoc.Mvc", "TeledoсApp\Teledoc.Mvc.csproj", "{167586BE-7D8A-430E-B508-8E81FB14BEC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teledoc.Database", "Teledoc.Database\Teledoc.Database.csproj", "{EFC577FD-5B6C-4B8E-8C0A-A062D30272B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{167586BE-7D8A-430E-B508-8E81FB14BEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{167586BE-7D8A-430E-B508-8E81FB14BEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167586BE-7D8A-430E-B508-8E81FB14BEC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFC577FD-5B6C-4B8E-8C0A-A062D30272B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFC577FD-5B6C-4B8E-8C0A-A062D30272B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFC577FD-5B6C-4B8E-8C0A-A062D30272B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFC577FD-5B6C-4B8E-8C0A-A062D30272B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
-﻿@using TeledocApp.ViewModels;
-@model ClientTableViewModel
+﻿@using Teledoc.Domain.Models;
+@model IEnumerable<Client>?
 
-@if (Model.Clients != null && Model.Clients.Count() > 0)
+@if (Model != null && Model.Count() > 0)
 {
 <table>
     <tr>
@@ -10,14 +10,14 @@
         <th>Дата создания</th>
         <th>Дата изменения</th>
     </tr>
-        @foreach (var client in Model.Clients)
+        @foreach (var client in Model)
         {
             <tr>
                 <td>@client.Inn</td>
                 <td>@client.Name</td>
                 <td>@client.CreateDate</td>
                 <td>@client.UpdateDate</td>
-                <td><a asp-controller="client" asp-action="clientdetails" asp-route-clientId="@client.Id" \
+                <td><a asp-controller="client" asp-action="clientdetails" asp-route-clientInn="@client.Inn" \
                         asp-route-clientType="@client.ClientType">Подробнее</a></td>
             </tr>
         }

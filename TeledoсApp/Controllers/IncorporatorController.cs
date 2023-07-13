@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Teledoc.Application.Interfaces;
+using Teledoc.Database;
 using Teledoc.Domain.Interfaces;
 using Teledoc.Domain.Models;
 using TeledocApp.ViewModels;
@@ -7,13 +9,13 @@ namespace TeledocApp.Controllers
 {
     public class IncorporatorController : Controller
     {
-        private readonly IRepository<Incorporator> _incorporatorRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IFounderService _founderService;
+        private readonly TeledocContext _context;
 
-        public IncorporatorController(IRepository<Incorporator> incorporatorRepository, IUnitOfWork unitOfWork)
+        public IncorporatorController(TeledocContext context, IFounderService founderService)
         {
-            _incorporatorRepository = incorporatorRepository;
-            _unitOfWork = unitOfWork;
+            _context = context;
+            _founderService = founderService;
         }
 
         [HttpGet]
@@ -25,24 +27,27 @@ namespace TeledocApp.Controllers
         [HttpGet]
         public IActionResult AddIncorporator()
         {
-            return View(new AddIncorporatorViewModel());
+            return View(new AddIncorporatorForm());
         }
 
         /// <summary>
         /// Добавление новых учредителей
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddIncorporator(AddIncorporatorViewModel viewModel)
+        public async Task<IActionResult> AddIncorporator(AddIncorporatorForm viewModel)
         {
-            if(_incorporatorRepository.GetQuary().Any(inc=> inc.Inn == viewModel.Inn))
+            if(_founderService.FounderWithInnExist(viewModel.Inn))
                 ModelState.AddModelError("Inn", "Данный ИНН уже зарегистрирован");
+
+            if(viewModel.Inn.Length != 12)
+                ModelState.AddModelError("Inn", "ИНН должен состоять из 12 цифр");
 
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var incorporator = new Incorporator(viewModel.Inn, viewModel.FullName);
-            await _incorporatorRepository.AddAsync(incorporator);
-            await _unitOfWork.SaveChangesAsync();
+            var founder = new Founder(viewModel.Inn, viewModel.FullName);
+            await _founderService.AddFounder(founder);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -54,8 +59,8 @@ namespace TeledocApp.Controllers
         [HttpGet("get/incorporatorstable")]
         public IActionResult IncorporatorsTable()
         {
-            var incorporators = _incorporatorRepository.GetQuary().AsEnumerable();
-            var viewModel = new IncorporatorTableViewModel(incorporators);
+            var founders = _founderService.GetAllFounders();
+            var viewModel = new IncorporatorTableViewModel(founders);
             return PartialView(viewModel);
         }
     }

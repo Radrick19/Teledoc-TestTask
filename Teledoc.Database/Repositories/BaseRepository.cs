@@ -8,18 +8,17 @@ using System.Threading.Tasks;
 using Teledoc.Domain.Interfaces;
 using Teledoc.Domain.Models.Base;
 
-namespace Teledoc.Domain.Repositories
+namespace Teledoc.Database.Repositories
 {
     public class BaseRepository<T> : IRepository<T> where T : Entity
     {
-        protected TeledokContext context => _unitOfWork.GetContext();
+        protected readonly TeledocContext _context;
         protected readonly DbSet<T> dbSet;
-        protected readonly IUnitOfWork _unitOfWork;
 
-        public BaseRepository(IUnitOfWork unitOfWork)
+        public BaseRepository(TeledocContext context)
         {
-            _unitOfWork = unitOfWork;
-            dbSet = context.Set<T>();
+            _context = context;
+            dbSet = _context.Set<T>();
         }
 
         public virtual async Task AddAsync(T entity)
@@ -56,11 +55,6 @@ namespace Teledoc.Domain.Repositories
         public virtual async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression)
         {
             return await dbSet.FirstOrDefaultAsync(expression);
-        }
-
-        public virtual T FirstOrDefault(Expression<Func<T, bool>> expression)
-        {
-            return dbSet.FirstOrDefault(expression);
         }
     }
 }

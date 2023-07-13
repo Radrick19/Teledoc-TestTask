@@ -4,24 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teledoc.Domain.Infrastructure.Enums;
 using Teledoc.Domain.Models.Base;
-using Teledoc.Domain.Models.Clients;
 
 namespace Teledoc.Domain.Models
 {
     /// <summary>
     /// Учредитель
     /// </summary>
-    public class Incorporator : Entity
+    public class Founder : Entity
     {
         public string Inn { get; set; }
         public string FullName { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
-        public ICollection<LegalEntityIncorporator>? LegalEntities { get; set; }
+        public ICollection<ClientFounder>? Clients { get; set; }
 
-        public Incorporator(string inn, string fullName)
+        public Founder(string inn, string fullName)
         {
             Inn = inn;
             FullName = fullName;
@@ -29,7 +27,7 @@ namespace Teledoc.Domain.Models
             UpdateDate = DateTime.Now;
         }
 
-        protected Incorporator()
+        protected Founder()
         {
             
         }

@@ -1,8 +1,8 @@
-﻿@using TeledocApp.ViewModels;
-@model IncorporatorTableViewModel
+﻿@using Teledoc.Domain.Models;
+@model IEnumerable<Founder>?
 
 
-@if (Model.Incorporators != null && Model.Incorporators.Count() > 0)
+@if (Model != null && Model.Count() > 0)
 {
 <table>
     <thead>
@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var client in Model.Incorporators)
+        @foreach (var client in Model)
         {
         <tr>
             <td>@client.Inn</td>

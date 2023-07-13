@@ -1,31 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Teledoc.Domain.Infrastructure.Enums;
-using Teledoc.Domain.Infrastructure.Factories;
+using Teledoc.Application.Interfaces;
+using Teledoc.Database;
+using Teledoc.Domain.Enums;
 using Teledoc.Domain.Interfaces;
 using Teledoc.Domain.Models;
 using Teledoc.Domain.Models.Base;
-using Teledoc.Domain.Models.Clients;
 using TeledocApp.ViewModels;
 
 namespace TeledocApp.Controllers
 {
     public class ClientController : Controller
     {
-        private readonly IRepository<IndividualPerson> _individualPersonRepository;
-        private readonly IRepository<LegalEntity> _legalEntityRepository;
-        private readonly IRepository<Incorporator> _incorporatorRepository;
-        private readonly IRepository<LegalEntityIncorporator> _legalEntityIncorporatorRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IClientService _clientService;
+        private readonly IFounderService _founderService;
 
-        public ClientController(IRepository<IndividualPerson> individualPersonRepository,
-            IRepository<LegalEntity> legalEntityRepository, IUnitOfWork unitOfWork, IRepository<Incorporator> incorporatorRepository, IRepository<LegalEntityIncorporator> legalEntityIncorporatorRepository)
+        public ClientController(IClientService clientService, IFounderService founderService)
         {
-            _individualPersonRepository = individualPersonRepository;
-            _legalEntityRepository = legalEntityRepository;
-            _unitOfWork = unitOfWork;
-            _incorporatorRepository = incorporatorRepository;
-            _legalEntityIncorporatorRepository = legalEntityIncorporatorRepository;
+            _clientService = clientService;
+            _founderService = founderService;
         }
 
         [HttpGet]
@@ -38,33 +31,24 @@ namespace TeledocApp.Controllers
         /// <summary>
         /// Добавляет физ лицу нового учредителя
         /// </summary>
-        /// <param name="incorporatorInn">ИНН учредителя</param>
+        /// <param name="founderInn">ИНН учредителя</param>
         /// <param name="clientInn">ИНН физ лица</param>
         [HttpPost]
-        public async Task<IActionResult> AddIncorporator(string incorporatorInn, string clientInn)
+        public async Task<IActionResult> AddIncorporator(string founderInn, string clientInn)
         {
-            var client = _legalEntityRepository.GetQuary().FirstOrDefault(le=> le.Inn == clientInn);
-            var incorporator = _incorporatorRepository.GetQuary().FirstOrDefault(inc=> incorporatorInn == inc.Inn);
+            var client =await _clientService.GetClientByInn(clientInn);
+            var founder = _founderService.GetFounderByInn(founderInn);
 
-            if(incorporator == null)
+            if(founder == null)
                 ModelState.AddModelError("incorporatorInn", "Данный ИНН не зарегистрирован");
 
-            if (client.Incorporators.Any(inc=> incorporatorInn == inc.Incorporator.Inn))
+            if (client.Founders.Any(fnd=> fnd.Founder == founder))
                 ModelState.AddModelError("incorporatorInn", "Данный ИНН уже добавлен");
 
             if (!ModelState.IsValid)
                 return View("ClientDetails", client);
 
-            LegalEntityIncorporator legalEntityIncorporator = new LegalEntityIncorporator()
-            {
-                Incorporator = incorporator,
-                LegalEntity = client
-            };
-
-            client.UpdateDate = DateTime.Now;
-            _legalEntityRepository.Update(client);
-            await _legalEntityIncorporatorRepository.AddAsync(legalEntityIncorporator);
-            await _unitOfWork.SaveChangesAsync();
+            await _founderService.AddFounderToClient(client, founder);
             return View("ClientDetails", client);
         }
 
@@ -75,73 +59,57 @@ namespace TeledocApp.Controllers
         /// <param name="clientType">Enum типа клиента</param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> ClientDetails(int clientId, ClientType clientType)
+        public async Task<IActionResult> ClientDetails(string clientInn)
         {
-            if(clientType == ClientType.IndividualPerson)
-                return View(await _individualPersonRepository.GetAsync(clientId));
-
-            else
-                return View(await _legalEntityRepository.GetAsync(clientId));
+            return View(await _clientService.GetClientByInn(clientInn));
         }
 
         [HttpGet]
         public IActionResult AddClient()
         {
-            return View(new AddClientViewModel());
+            return View(new AddClientForm());
         }
 
         /// <summary>
         /// Добавление нового клиента
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddClient(AddClientViewModel viewModel)
+        public async Task<IActionResult> AddClient(AddClientForm viewModel)
         {
             var enumType = (ClientType)Enum.Parse(typeof(ClientType), viewModel.ClientType);
-            var incorporator = _incorporatorRepository.GetQuary().FirstOrDefault(inc => inc.Inn == viewModel.IncorporatorInn);
-            if (incorporator == null)
+
+            var founder = _founderService.GetFounderByInn(viewModel.FounderInn);
+
+            if (founder == null)
                 ModelState.AddModelError("IncorporatorInn", "ИНН учредителя нет в базе");
+
+            if (_founderService.FounderHasIndividualPerson(founder?.Inn))
+                ModelState.AddModelError("IncorporatorInn", "У данного учредителя уже есть ИП");
+
+            if (_clientService.ClientWithInnExist(viewModel.Inn))
+                ModelState.AddModelError("Inn", "Данный ИНН уже занят");
+
+            if (_clientService.ClientWithNameExist(viewModel.Name))
+                ModelState.AddModelError("Name", "Данное название уже занято");
 
             if (enumType == ClientType.IndividualPerson)
             {
-                if(viewModel.Inn.Length != 12)
-                    ModelState.AddModelError("Inn", "ИНН ИП должен состоять из 12 цифр, а физ лица из 10");
-
-                if (_individualPersonRepository.GetQuary().Any(ip => viewModel.Inn == ip.Inn))
-                    ModelState.AddModelError("Inn", "Данный ИНН уже занят");
-
-                if (_individualPersonRepository.GetQuary().Any(ip => ip.IncorporatorId == incorporator.Id))
-                    ModelState.AddModelError("IncorporatorInn", "У данного учредителя уже есть ИП");
-
-                if (!ModelState.IsValid)
-                    return View(viewModel);
-
-                IndividualPerson ip = IndividualPersonFactory.Create(viewModel.Inn, viewModel.Name, incorporator);
-                await _individualPersonRepository.AddAsync(ip);
+                if (viewModel.Inn.Length != 12)
+                    ModelState.AddModelError("Inn", "ИНН ИП должен состоять из 12 цифр");
             }
             else
             {
                 if (viewModel.Inn.Length != 10)
-                    ModelState.AddModelError("Inn", "ИНН ИП должен состоять из 12 цифр, а физ лица из 10");
-
-                if (_legalEntityRepository.GetQuary().Any(ip => viewModel.Inn == ip.Inn))
-                    ModelState.AddModelError("Inn", "Данный ИНН уже занят");
-
-                if (_legalEntityRepository.GetQuary().Any(ip => viewModel.Name == ip.Name))
-                    ModelState.AddModelError("Name", "Данное название уже занято");
-
-                if(!ModelState.IsValid)
-                    return View(viewModel);
-
-                LegalEntity le = LegalEntityFactory.Create(viewModel.Inn, viewModel.Name);
-                LegalEntityIncorporator legalEntityIncorporator = new LegalEntityIncorporator()
-                {
-                    Incorporator = incorporator,
-                    LegalEntity = le
-                };
-                await _legalEntityIncorporatorRepository.AddAsync(legalEntityIncorporator);
+                    ModelState.AddModelError("Inn", "ИНН физ лица должен состоять из 10 цифр");
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            Client client = new Client(viewModel.Inn, enumType, viewModel.Name);
+            await _clientService.AddClient(client);
+            await _founderService.AddFounderToClient(client, founder);
+
             return RedirectToAction("Index");
         }
 
@@ -153,9 +121,8 @@ namespace TeledocApp.Controllers
         [HttpGet("get/iptable")]
         public IActionResult IndividualPersonsTable()
         {
-            var individualPersons = _individualPersonRepository.GetQuary().AsEnumerable();
-            var viewModel = new ClientTableViewModel(individualPersons);
-            return PartialView("ClientTable", viewModel);
+            var individualPersons = _clientService.GetClients(ClientType.IndividualPerson) ;
+            return PartialView("ClientTable", individualPersons);
         }
 
         /// <summary>
@@ -165,9 +132,8 @@ namespace TeledocApp.Controllers
         [HttpGet("get/letable")]
         public IActionResult LegalEntitiesTable()
         {
-            var legalEntities = _legalEntityRepository.GetQuary();
-            var viewModel = new ClientTableViewModel(legalEntities);
-            return PartialView("ClientTable", viewModel);
+            var legalEntities = _clientService.GetClients(ClientType.LegalEntity);
+            return PartialView("ClientTable", legalEntities);
         }
     }
 }

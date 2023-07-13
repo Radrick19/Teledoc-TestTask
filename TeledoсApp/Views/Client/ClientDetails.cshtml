@@ -1,6 +1,6 @@
-﻿@using Teledoc.Domain.Infrastructure.Enums;
-@using Teledoc.Domain.Models.Base;
-@model Client
+﻿@using Teledoc.Domain.Enums;
+@using Teledoc.Domain.Models;
+@model Client?
 @{
     ViewData["Title"] = "Home Page";
     Layout = "_Layout";
@@ -11,13 +11,13 @@
     @if (Model.ClientType == ClientType.IndividualPerson)
     {
         <h5>ИП</h5>
-        var incorporator = Model.GetIncorporators().First();
-        <h3>Учредитель: ИНН:@incorporator.Inn ФИО: @incorporator.FullName</h3>
+        var founder = Model.Founders.FirstOrDefault().Founder;
+        <h3>Учредитель: ИНН:@founder.Inn ФИО: @founder.FullName</h3>
     }
     else
     {
         <h5>Юридическое лицо</h5>
-        var incorporators = Model.GetIncorporators();
+        var incorporators = Model.Founders.Select(fc => fc.Founder);
         <h3>Учредители:</h3>
         @foreach(var incorporator in incorporators)
         {
@@ -26,7 +26,7 @@
         <div class="add-new-incorporator">
             <form asp-controller="client" asp-action="addincorporator">
                 <input name="clientInn" value="@Model.Inn" type="hidden" />
-                <input required name="incorporatorInn" type="search" placeholder="ИНН"/>
+                <input required name="founderInn" type="search" placeholder="ИНН"/>
                 <input type="submit" value="Добавить"/>
             </form>
         </div>
