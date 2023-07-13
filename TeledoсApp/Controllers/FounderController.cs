@@ -7,12 +7,12 @@ using TeledocApp.ViewModels;
 
 namespace TeledocApp.Controllers
 {
-    public class IncorporatorController : Controller
+    public class FounderController : Controller
     {
         private readonly IFounderService _founderService;
         private readonly TeledocContext _context;
 
-        public IncorporatorController(TeledocContext context, IFounderService founderService)
+        public FounderController(TeledocContext context, IFounderService founderService)
         {
             _context = context;
             _founderService = founderService;
@@ -25,16 +25,16 @@ namespace TeledocApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddIncorporator()
+        public IActionResult AddFounder()
         {
-            return View(new AddIncorporatorForm());
+            return View(new AddFounderForm());
         }
 
         /// <summary>
         /// Добавление новых учредителей
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddIncorporator(AddIncorporatorForm viewModel)
+        public async Task<IActionResult> AddFounder(AddFounderForm viewModel)
         {
             if(_founderService.FounderWithInnExist(viewModel.Inn))
                 ModelState.AddModelError("Inn", "Данный ИНН уже зарегистрирован");
@@ -56,12 +56,11 @@ namespace TeledocApp.Controllers
         /// Таблица с данными всех учредителей для запросов из JS
         /// </summary>
         /// <returns></returns>
-        [HttpGet("get/incorporatorstable")]
-        public IActionResult IncorporatorsTable()
+        [HttpGet("get/founderstable")]
+        public IActionResult FoundersTable()
         {
             var founders = _founderService.GetAllFounders();
-            var viewModel = new IncorporatorTableViewModel(founders);
-            return PartialView(viewModel);
+            return PartialView(founders);
         }
     }
 }

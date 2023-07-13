@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 })
 
 function OpenIncorporatorsTable() {
-	$.get("/get/incorporatorstable", function (data) {
+	$.get("/get/founderstable", function (data) {
 		tableHandler.innerHTML = data
 	});
 }
