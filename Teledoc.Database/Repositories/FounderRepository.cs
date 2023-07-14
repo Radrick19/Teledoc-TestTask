@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Teledoc.Domain.Models;
@@ -14,9 +15,12 @@ namespace Teledoc.Database.Repositories
         {
         }
 
-        public override IQueryable<Founder> GetQuary()
+        public override IEnumerable<Founder> Get(Expression<Func<Founder, bool>>? expression = null)
         {
-            return dbSet.Include(inc => inc.Clients);
+            IQueryable<Founder> query = dbSet.Include(inc => inc.Clients);
+            if (expression != null)
+                query = query.Where(expression);
+            return query.AsEnumerable();
         }
 
         public override Task<Founder> GetAsync(int id)

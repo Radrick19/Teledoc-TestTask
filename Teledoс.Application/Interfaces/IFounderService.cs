@@ -9,7 +9,7 @@ namespace Teledoc.Application.Interfaces
 {
     public interface IFounderService
     {
-        Founder? GetFounderByInn(string inn);
+        Task<Founder?> GetFounderByInn(string inn);
 
         IEnumerable<Founder> GetAllFounders();
 

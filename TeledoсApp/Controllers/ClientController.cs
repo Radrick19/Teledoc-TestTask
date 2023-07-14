@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Teledoc.Application.Interfaces;
 using Teledoc.Database;
+using Teledoc.Database.Repositories;
 using Teledoc.Domain.Enums;
 using Teledoc.Domain.Interfaces;
 using Teledoc.Domain.Models;
@@ -17,8 +18,8 @@ namespace TeledocApp.Controllers
 
         public ClientController(IClientService clientService, IFounderService founderService)
         {
-            _clientService = clientService;
-            _founderService = founderService;
+            _clientService = clientService ?? throw new ArgumentNullException(nameof(clientService));
+            _founderService = founderService ?? throw new ArgumentNullException(nameof(founderService));
         }
 
         [HttpGet]
@@ -37,7 +38,7 @@ namespace TeledocApp.Controllers
         public async Task<IActionResult> AddIncorporator(string founderInn, string clientInn)
         {
             var client =await _clientService.GetClientByInn(clientInn);
-            var founder = _founderService.GetFounderByInn(founderInn);
+            var founder = await _founderService.GetFounderByInn(founderInn);
 
             if(founder == null)
                 ModelState.AddModelError("incorporatorInn", "Данный ИНН не зарегистрирован");
@@ -76,9 +77,11 @@ namespace TeledocApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddClient(AddClientForm viewModel)
         {
+            ModelState.Clear();
+
             var enumType = (ClientType)Enum.Parse(typeof(ClientType), viewModel.ClientType);
 
-            var founder = _founderService.GetFounderByInn(viewModel.FounderInn);
+            var founder = await _founderService.GetFounderByInn(viewModel.FounderInn);
 
             if (founder == null)
                 ModelState.AddModelError("IncorporatorInn", "ИНН учредителя нет в базе");

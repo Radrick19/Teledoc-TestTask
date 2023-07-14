@@ -31,7 +31,7 @@ namespace Teledoc.Database.Repositories
             dbSet.Remove(entity);
         }
 
-        public virtual async Task DeleteAsync(int entityId)
+        public virtual async Task DeleteByIdAsync(int entityId)
         {
             T entity = await dbSet.FindAsync(entityId);
             dbSet.Remove(entity);
@@ -42,9 +42,12 @@ namespace Teledoc.Database.Repositories
             return await dbSet.FindAsync(id);
         }
 
-        public virtual IQueryable<T> GetQuary()
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>>? expression = null)
         {
-            return dbSet;
+            IQueryable<T> query = dbSet;
+            if(expression != null)
+                query = query.Where(expression);
+            return query.AsEnumerable();
         }
 
         public virtual void Update(T entity)

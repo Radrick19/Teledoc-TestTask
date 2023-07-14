@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Teledoc.Application.Interfaces;
 using Teledoc.Database;
+using Teledoc.Database.Repositories;
 using Teledoc.Domain.Interfaces;
 using Teledoc.Domain.Models;
 using TeledocApp.ViewModels;
@@ -10,12 +12,10 @@ namespace TeledocApp.Controllers
     public class FounderController : Controller
     {
         private readonly IFounderService _founderService;
-        private readonly TeledocContext _context;
 
-        public FounderController(TeledocContext context, IFounderService founderService)
+        public FounderController(IFounderService founderService)
         {
-            _context = context;
-            _founderService = founderService;
+            _founderService = founderService ?? throw new ArgumentNullException(nameof(founderService));
         }
 
         [HttpGet]
@@ -36,6 +36,7 @@ namespace TeledocApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFounder(AddFounderForm viewModel)
         {
+            ModelState.Clear();
             if(_founderService.FounderWithInnExist(viewModel.Inn))
                 ModelState.AddModelError("Inn", "Данный ИНН уже зарегистрирован");
 
@@ -47,7 +48,6 @@ namespace TeledocApp.Controllers
 
             var founder = new Founder(viewModel.Inn, viewModel.FullName);
             await _founderService.AddFounder(founder);
-            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }

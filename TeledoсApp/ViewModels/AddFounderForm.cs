@@ -4,7 +4,7 @@ namespace TeledocApp.ViewModels
 {
     public class AddFounderForm
     {
-        [RegularExpression("^$|^[0-9X]{12}$", ErrorMessage = "ИНН должен состоять только из 12 арабских цифр")]
+        [RegularExpression(@"^\d$", ErrorMessage = "ИНН должен состоять только из цифр")]
         public string Inn { get; set; }
 
         public string FullName { get; set; }

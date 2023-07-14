@@ -10,9 +10,12 @@ namespace Teledoc.Database.Repositories
         {
         }
 
-        public override IQueryable<Client> GetQuary()
+        public override IEnumerable<Client> Get(Expression<Func<Client, bool>>? expression = null)
         {
-            return dbSet.Include(le => le.Founders).ThenInclude(inc=> inc.Founder);
+            IQueryable<Client> query = dbSet.Include(le => le.Founders).ThenInclude(inc => inc.Founder);
+            if (expression != null)
+                query = query.Where(expression);
+            return query.AsEnumerable();
         }
 
         public override Task<Client> GetAsync(int id)

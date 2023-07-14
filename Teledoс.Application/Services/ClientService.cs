@@ -19,8 +19,8 @@ namespace Teledoc.Application.Services
 
         public ClientService(IRepository<Client> clientRepository, TeledocContext context)
         {
-            _clientRepository = clientRepository;
-            _context = context;
+            _clientRepository = clientRepository ?? throw new ArgumentNullException(nameof(clientRepository));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task AddClient(Client client)
@@ -32,12 +32,12 @@ namespace Teledoc.Application.Services
         public bool ClientWithInnExist(string? inn)
         {
             if(inn == null) return false; 
-            return _clientRepository.GetQuary().Any(client=> client.Inn == inn);
+            return _clientRepository.Get(client => client.Inn == inn).Any();
         }
 
         public bool ClientWithNameExist(string name)
         {
-            return _clientRepository.GetQuary().Any(client => client.Name == name);
+            return _clientRepository.Get(client => client.Name == name).Any();
         }
 
         public async Task<Client?> GetClientByInn(string inn)
@@ -49,15 +49,18 @@ namespace Teledoc.Application.Services
         {
             if(clientType == null)
             {
-                return _clientRepository.GetQuary();
+                return _clientRepository.Get();
             }
-            return _clientRepository.GetQuary().Where(client=> client.ClientType == clientType);
+            return _clientRepository.Get(client => client.ClientType == clientType);
         }
 
         public async Task RemoveClient(string inn)
         {
             var clientForDelete = await _clientRepository
                 .FirstOrDefaultAsync(client => client.Inn == inn);
+
+            if (clientForDelete == null) throw new ArgumentException();
+
             _clientRepository.Delete(clientForDelete);
             await _context.SaveChangesAsync();
         }

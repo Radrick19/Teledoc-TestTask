@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Teledoc.Application.Interfaces;
 using Teledoc.Database;
+using Teledoc.Database.Repositories;
 using Teledoc.Domain.Enums;
 using Teledoc.Domain.Interfaces;
 using Teledoc.Domain.Models;
@@ -20,9 +21,9 @@ namespace Teledoc.Application.Services
 
         public FounderService(IRepository<Founder> founderRepository, TeledocContext context, IRepository<ClientFounder> clientFounderRepository)
         {
-            _founderRepository = founderRepository;
-            _context = context;
-            _clientFounderRepository = clientFounderRepository;
+            _founderRepository = founderRepository ?? throw new ArgumentNullException(nameof(founderRepository));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _clientFounderRepository = clientFounderRepository ?? throw new ArgumentNullException(nameof(clientFounderRepository));
         }
 
         public async Task AddFounder(Founder founder)
@@ -41,27 +42,28 @@ namespace Teledoc.Application.Services
 
         public bool FounderHasIndividualPerson(string inn)
         {
-            return _clientFounderRepository.GetQuary().Any(cf=> cf.Founder.Inn == inn && cf.Client.ClientType == ClientType.IndividualPerson);
+            return _clientFounderRepository.Get(cf => cf.Founder.Inn == inn && cf.Client.ClientType == ClientType.IndividualPerson).Any();
         }
 
         public bool FounderWithInnExist(string inn)
         {
-            return _founderRepository.GetQuary().Any(founder => founder.Inn == inn);
+            return _founderRepository.Get(founder => founder.Inn == inn).Any();
         }
 
         public IEnumerable<Founder> GetAllFounders()
         {
-            return _founderRepository.GetQuary();
+            return _founderRepository.Get();
         }
 
-        public Founder? GetFounderByInn(string inn)
+        public async Task<Founder?> GetFounderByInn(string inn)
         {
-            return _founderRepository.GetQuary().FirstOrDefault(founder => founder.Inn == inn);
+            return await _founderRepository.FirstOrDefaultAsync(founder => founder.Inn == inn);
         }
 
         public async Task RemoveFounder(string inn)
         {
-            var founderForDelete = _founderRepository.GetQuary().FirstOrDefault(founder => founder.Inn == inn);
+            var founderForDelete = _founderRepository.Get().FirstOrDefault(founder => founder.Inn == inn);
+            if (founderForDelete == null) { throw new ArgumentException(); }
             _founderRepository.Delete(founderForDelete);
             await _context.SaveChangesAsync();
         }
